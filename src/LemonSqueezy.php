@@ -63,7 +63,10 @@ class LemonSqueezy
             ->$method(static::API."/{$uri}", $payload);
 
         if ($response->failed()) {
-            throw new LemonSqueezyApiError($response['errors'][0]['detail'], (int) $response['errors'][0]['status']);
+            throw new LemonSqueezyApiError(
+                $response->json('errors.0.detail', 'An unknown error occurred.'),
+                $response->json('errors.0.status', $response->status())
+            );
         }
 
         return $response;

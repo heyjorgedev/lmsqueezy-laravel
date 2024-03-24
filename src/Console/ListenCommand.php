@@ -304,9 +304,7 @@ class ListenCommand extends Command implements Isolatable, PromptsForMissingInpu
             ],
         ];
 
-        $result = Http::withToken(config('lemon-squeezy.api_key'))
-            ->retry(3, 250)
-            ->post(LemonSqueezy::API.'/webhooks', $data);
+        $result = LemonSqueezy::api('post', 'webhooks', $data);
 
         if ($result->status() !== 201) {
             error('Failed to setup webhook.');
